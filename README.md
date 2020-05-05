@@ -16,16 +16,19 @@ macro.
 
 To build both the encoder and decoder for each implementation:
 
-    make all
-    make
+    $ make all
+
+Or
+
+    $ make
 
 To build just the encoder:
 
-    make encode
+    $ make encode
 
 To build just the decoder:
 
-    make decode
+    $ make decode
 
 ### Usage
 
