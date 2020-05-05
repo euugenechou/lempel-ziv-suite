@@ -35,6 +35,9 @@ int main(int argc, char **argv) {
 
   while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
     switch (opt) {
+    case 'h':
+      print_usage(argv);
+      return 0;
     case 'v':
       verbose = true;
       break;
@@ -46,9 +49,6 @@ int main(int argc, char **argv) {
       outfile = open(optarg, O_WRONLY | O_CREAT | O_TRUNC);
       check(outfile != -1, "Failed to open %s.\n", optarg);
       break;
-    case 'h':
-      print_usage(argv);
-      return 0;
     default:
       print_usage(argv);
       return 1;

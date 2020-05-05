@@ -21,7 +21,7 @@ typedef uint32_t Code;
 
 uint64_t bytes(uint64_t bits);
 
-uint8_t bitwidth(Code c);
+int bitwidth(Code c);
 
 int read_bytes(int infile, uint8_t *buf, int to_read);
 

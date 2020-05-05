@@ -1,6 +1,4 @@
 #include "util.h"
-#include <stdarg.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -9,10 +7,10 @@ uint64_t bytes(uint64_t bits) {
   return ((bits % 8) || (!bits)) ? bits / 8 + 1 : bits / 8;
 }
 
-uint8_t bitwidth(Code c) {
-  uint8_t width = 1;
+int bitwidth(Code c) {
+  int width = 1;
 
-  while ((c >>= 1)) {
+  while (c >>= 1) {
     width += 1;
   }
 

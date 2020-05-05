@@ -1,13 +1,5 @@
 #include "util.h"
-#include "word.h"
 #include <stdbool.h>
-
-static Code stack[MAX];
-static uint32_t ptr = 0;
-
-#define stack_push(x)   (stack[ptr++] = x)
-#define stack_pop()     (stack[--ptr])
-#define stack_empty()   (!ptr)
 
 static Code codes[MAX];     // Each code points to the code it succeeds.
 static Symbol syms[MAX];    // Holds the symbol that was appended to each code.
@@ -38,22 +30,23 @@ Code wt_at(Code curr) {
   return codes[curr];
 }
 
-void wt_backtrack_code(Code curr) {
-  Code chain = curr;
+bool wt_resolve_code(Code c, Symbol *s) {
+  static bool chained = false;
+  static Code stack[MAX];
+  static Code ptr = 0;
 
-  while (chain != EMPTY) {
-    stack_push(chain);
-    chain = codes[chain];
+  if (!chained) {
+    while (c != EMPTY) {
+      stack[ptr++] = c;
+      c = codes[c];
+    }
+
+    chained = true;
   }
 
-  return;
-}
-
-bool wt_resolve_code(Symbol *s) {
-  if (stack_empty()) {
-    return false;
+  if (!ptr) {
+    return chained = false;
   }
 
-  *s = syms[stack_pop()];
-  return true;
+  return *s = syms[stack[--ptr]];
 }

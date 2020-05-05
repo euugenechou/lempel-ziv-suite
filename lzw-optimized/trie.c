@@ -1,6 +1,6 @@
 #include "trie.h"
 #include "util.h"
-#include <inttypes.h>
+#include <stdint.h>
 
 static Code trie[MAX][ALPHABET];
 

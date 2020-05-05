@@ -1,3 +1,4 @@
+#include "endian.h"
 #include "io.h"
 #include "util.h"
 #include <fcntl.h>
@@ -17,12 +18,24 @@ static uint8_t bitbuf[BLOCK] = { 0 };
 
 void read_header(int fd, FileHeader *fh) {
   read_bytes(fd, (uint8_t *)fh, sizeof(FileHeader));
+
+  if (big_endian()) {
+    fh->magic = swap32(fh->magic);
+    fh->protection = swap16(fh->protection);
+  }
+
   total_bits += (BYTE * sizeof(FileHeader));
   return;
 }
 
 void write_header(int fd, FileHeader *fh) {
   total_bits += (BYTE * sizeof(FileHeader));
+
+  if (big_endian()) {
+    fh->magic = swap32(fh->magic);
+    fh->protection = swap16(fh->protection);
+  }
+
   write_bytes(fd, (uint8_t *)fh, sizeof(FileHeader));
   return;
 }
@@ -50,6 +63,10 @@ bool read_sym(int fd, Symbol *s) {
 
 void write_code(int fd, Code c, int width) {
   total_bits += width;
+
+  if (big_endian()) {
+    c = swap32(c);
+  }
 
   for (int i = 0; i < width; i += 1) {
     if (c & (1 << i)) {
@@ -93,15 +110,17 @@ bool read_code(int fd, Code *c, int width) {
     bits = (bits + 1) % (BLOCK * BYTE);
   }
 
+  if (big_endian()) {
+    *c = swap32(*c);
+  }
+
   return *c != STOP;
 }
 
 void write_word(int fd, Code c) {
-  wt_backtrack_code(c);
-
   Symbol s = 0;
 
-  while (wt_resolve_code(&s)) {
+  while (wt_resolve_code(c, &s)) {
     symbuf[syms++] = s;
 
     if (syms == BLOCK) {

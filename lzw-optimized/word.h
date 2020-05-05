@@ -11,8 +11,6 @@ void wt_add(Code prev, Code curr, Code next);
 
 Code wt_at(Code curr);
 
-void wt_backtrack_code(Code curr);
-
-bool wt_resolve_code(Symbol *s);
+bool wt_resolve_code(Code c, Symbol *s);
 
 #endif
