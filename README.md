@@ -14,8 +14,7 @@ macro.
 
 ### Building
 
-The following instructions apply to each implementation:
-To build both the encoder and decoder:
+To build both the encoder and decoder for each implementation:
 
     make all
     make
