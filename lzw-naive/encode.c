@@ -1,15 +1,13 @@
 #include "io.h"
-#include "trie.h"
+#include "lzw.h"
 #include "util.h"
 #include <fcntl.h>
-#include <getopt.h>
-#include <inttypes.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-#define OPTIONS "vi:o:h"
+#define OPTIONS "hvi:o:"
 
 void print_usage(char **argv) {
   fprintf(stderr,
@@ -18,59 +16,14 @@ void print_usage(char **argv) {
     "   Compressed files are decompressed with the corresponding decoder.\n"
     "\n"
     "USAGE\n"
-    "   %s -[vh] -i <input file> -o <output file>\n"
+    "   %s -[hv] [-i input] [-o output]\n"
     "\n"
     "OPTIONS\n"
-    "   -v: Display compression statistics\n"
-    "   -i: Set input as argument after '-i' (stdin by default)\n"
-    "   -o: Set output as argument after '-o' (stdout by default)\n"
-    "   -h: Display program usage\n",
+    "   -h          Display program usage\n"
+    "   -v          Display compression statistics\n"
+    "   -i input    Specify input to compress (stdin by default)\n"
+    "   -o output   Specify output to compress to (stdout by default)\n",
     argv[0]);
-  return;
-}
-
-void encode(int infile, int outfile) {
-  struct stat statbuf;
-  fstat(infile, &statbuf);
-  fchmod(outfile, statbuf.st_mode);
-
-  FileHeader header = { MAGIC, statbuf.st_mode };
-  write_header(outfile, &header);
-
-  TrieNode *root = trie_create();
-  TrieNode *curr_node = root;
-  uint8_t curr_sym = 0;
-  uint16_t next_code = START_CODE;
-
-  while (read_sym(infile, &curr_sym)) {
-    TrieNode *next_node = trie_step(curr_node, curr_sym);
-
-    if (next_node) {
-      curr_node = next_node;
-    } else {
-      buffer_code(outfile, curr_node->code, bitwidth(next_code));
-      curr_node->children[curr_sym] = trie_node_create(next_code++);
-      curr_node = root->children[curr_sym];
-    }
-
-    if (next_code == MAX_CODE) {
-      trie_reset(root);
-      curr_node = root->children[curr_sym];
-      next_code = START_CODE;
-    }
-  }
-
-  if (curr_node != root) {
-    buffer_code(outfile, curr_node->code, bitwidth(next_code++));
-
-    if (next_code == MAX_CODE) {
-      next_code = START_CODE;
-    }
-  }
-
-  buffer_code(outfile, STOP_CODE, bitwidth(next_code));
-  flush_codes(outfile);
-  trie_delete(root);
   return;
 }
 
@@ -82,6 +35,9 @@ int main(int argc, char **argv) {
 
   while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
     switch (opt) {
+    case 'h':
+      print_usage(argv);
+      return 0;
     case 'v':
       verbose = true;
       break;
@@ -93,26 +49,30 @@ int main(int argc, char **argv) {
       outfile = open(optarg, O_WRONLY | O_CREAT | O_TRUNC);
       check(outfile != -1, "Failed to open %s.\n", optarg);
       break;
-    case 'h':
-      print_usage(argv);
-      exit(EXIT_SUCCESS);
     default:
       print_usage(argv);
-      exit(EXIT_FAILURE);
+      return 1;
     }
   }
+
+  struct stat statbuf;
+  fstat(infile, &statbuf);
+  fchmod(outfile, statbuf.st_mode);
+
+  FileHeader header = { MAGIC, statbuf.st_mode };
+  write_header(outfile, &header);
 
   encode(infile, outfile);
 
   if (verbose) {
     double ratio = 1.0 - (double) bytes(total_bits) / (double) total_syms;
-    printf("Compressed size: %" PRIu64 " bytes\n", bytes(total_bits));
-    printf("Uncompressed size: %" PRIu64 " bytes\n", total_syms);
-    printf("Compression ratio: %.2lf%%\n", 100.0 * ratio);
+    fprintf(stderr, "Compressed size: %" PRIu64 " bytes\n", bytes(total_bits));
+    fprintf(stderr, "Uncompressed size: %" PRIu64 " bytes\n", total_syms);
+    fprintf(stderr, "Compression ratio: %.2lf%%\n", 100.0 * ratio);
   }
 
   close(infile);
   close(outfile);
 
-  return EXIT_SUCCESS;
+  return 0;
 }

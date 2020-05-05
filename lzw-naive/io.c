@@ -2,164 +2,135 @@
 #include "io.h"
 #include "util.h"
 #include "word.h"
-#include <fcntl.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <unistd.h>
 
 uint64_t total_syms = 0;
 uint64_t total_bits = 0;
 
-static uint8_t sym_buf[BLOCK] = { 0 };
-static uint16_t sym_cnt = 0;
-static uint16_t sym_buf_end = UINT16_MAX;
+static int syms = 0;
+static uint8_t symbuf[BLOCK] = { 0 };
 
-static uint8_t bit_buf[BLOCK] = { 0 };
-static uint16_t bit_cnt = 0;
+static int bits = 0;
+static uint8_t bitbuf[BLOCK] = { 0 };
 
-int read_bytes(int infile, uint8_t *buf, int to_read) {
-  int bytes_to_read = to_read;
-  int bytes_read = 0;
-  int total_read = 0;
-
-  do {
-    bytes_read = read(infile, buf + total_read, bytes_to_read);
-    check(bytes_read != -1, "Failed to read from input file.\n");
-    bytes_to_read -= bytes_read;
-    total_read += bytes_read;
-  } while (bytes_read && total_read != to_read);
-
-  return total_read;
-}
-
-int write_bytes(int outfile, uint8_t *buf, int to_write) {
-  int bytes_to_write = to_write;
-  int bytes_written = 0;
-  int total_written = 0;
-
-  do {
-    bytes_written = write(outfile, buf + total_written, bytes_to_write);
-    check(bytes_written != -1, "Failed to write to output file.\n");
-    bytes_to_write -= bytes_written;
-    total_written += bytes_written;
-  } while (bytes_written && total_written != to_write);
-
-  return total_written;
-}
-
-void read_header(int infile, FileHeader *header) {
-  read_bytes(infile, (uint8_t *) header, sizeof(FileHeader));
+void read_header(int fd, FileHeader *fh) {
+  read_bytes(fd, (uint8_t *)fh, sizeof(FileHeader));
 
   if (big_endian()) {
-    header->magic = swap32(header->magic);
-    header->protection = swap16(header->protection);
+    fh->magic = swap32(fh->magic);
+    fh->protection = swap16(fh->protection);
   }
 
   total_bits += (BYTE * sizeof(FileHeader));
   return;
 }
 
-void write_header(int outfile, FileHeader *header) {
-  total_bits += (BYTE * sizeof(FileHeader));
+void write_header(int fd, FileHeader *fh) {
+  total_bits += (BYTE * sizeof(fh));
 
   if (big_endian()) {
-    header->magic = swap32(header->magic);
-    header->protection = swap16(header->protection);
+    fh->magic = swap32(fh->magic);
+    fh->protection = swap16(fh->protection);
   }
 
-  write_bytes(outfile, (uint8_t *) header, sizeof(FileHeader));
+  write_bytes(fd, (uint8_t *)fh, sizeof(FileHeader));
   return;
 }
 
-bool read_sym(int infile, uint8_t *sym) {
-  if (!sym_cnt) {
-    int bytes_read = read_bytes(infile, sym_buf, BLOCK);
-    sym_buf_end = (bytes_read == BLOCK) ? sym_buf_end : bytes_read + 1;
+bool read_sym(int fd, Symbol *s) {
+  static int end = -1;
+
+  if (!syms) {
+    int bytes = read_bytes(fd, symbuf, BLOCK);
+    end = (bytes == BLOCK) ? end : bytes + 1;
   }
 
-  *sym = sym_buf[sym_cnt];
-  sym_cnt = (sym_cnt + 1) % BLOCK;
-  total_syms = (sym_cnt != sym_buf_end) ? total_syms + 1 : total_syms;
+  *s = symbuf[syms];
+  syms = (syms + 1) % BLOCK;
 
-  return sym_cnt != sym_buf_end;
+  if (syms != end) {
+    total_syms += 1;
+  }
+
+  return syms != end;
 }
 
-void buffer_code(int outfile, uint16_t code, uint8_t bit_len) {
-  total_bits += bit_len;
+void buffer_code(int fd, Code c, int width) {
+  total_bits += width;
 
   if (big_endian()) {
-    code = swap16(code);
+    c = swap32(c);
   }
 
-  for (uint8_t i = 0; i < bit_len; i += 1) {
-    if (code & (1 << (i % HALFWORD))) {
-      bit_buf[bit_cnt / BYTE] |= (1 << (bit_cnt % BYTE));
+  for (int i = 0; i < width; i += 1) {
+    if (c & (1 << i)) {
+      bitbuf[bits / BYTE] |= (1 << (bits % BYTE));
     } else {
-      bit_buf[bit_cnt / BYTE] &= ~(1 << (bit_cnt % BYTE));
+      bitbuf[bits / BYTE] &= ~(1 << (bits % BYTE));
     }
 
-    bit_cnt += 1;
+    bits += 1;
 
-    if (bit_cnt / BYTE == BLOCK) {
-      write_bytes(outfile, bit_buf, BLOCK);
-      bit_cnt = 0;
+    if (bits / BYTE == BLOCK) {
+      write_bytes(fd, bitbuf, BLOCK);
+      bits = 0;
     }
   }
 
   return;
 }
 
-void flush_codes(int outfile) {
-  if (bit_cnt) {
-    write_bytes(outfile, bit_buf, bytes(bit_cnt));
+void flush_codes(int fd) {
+  if (bits) {
+    write_bytes(fd, bitbuf, bytes(bits));
   }
 
   return;
 }
 
-bool read_code(int infile, uint16_t *code, uint8_t bit_len) {
-  total_bits += bit_len;
-  *code = 0;
+bool read_code(int fd, Code *c, int width) {
+  total_bits += width;
 
-  for (uint8_t i = 0; i < bit_len; i += 1) {
-    if (!bit_cnt) {
-      read_bytes(infile, bit_buf, BLOCK);
+  *c = 0;
+
+  for (int i = 0; i < width; i += 1) {
+    if (!bits) {
+      read_bytes(fd, bitbuf, BLOCK);
     }
 
-    if (bit_buf[bit_cnt / BYTE] & (1 << (bit_cnt % BYTE))) {
-      *code |= (1 << (i % HALFWORD));
+    if (bitbuf[bits / BYTE] & (1 << (bits % BYTE))) {
+      *c |= (1 << i);
     } else {
-      *code &= ~(1 << (i % HALFWORD));
+      *c &= ~(1 << i);
     }
 
-    bit_cnt = (bit_cnt + 1) % (BLOCK * BYTE);
+    bits = (bits + 1) % (BLOCK * BYTE);
   }
 
   if (big_endian()) {
-    *code = swap16(*code);
+    *c = swap32(*c);
   }
 
-  return *code != STOP_CODE;
+  return *c != STOP;
 }
 
-void buffer_word(int outfile, Word *w) {
+void buffer_word(int fd, Word *w) {
   total_syms += w->len;
 
   for (uint32_t i = 0; i < w->len; i += 1) {
-    sym_buf[sym_cnt++] = w->syms[i];
+    symbuf[syms++] = w->syms[i];
 
-    if (sym_cnt == BLOCK) {
-      write_bytes(outfile, sym_buf, BLOCK);
-      sym_cnt = 0;
+    if (syms == BLOCK) {
+      write_bytes(fd, symbuf, BLOCK);
+      syms = 0;
     }
   }
 
   return;
 }
 
-void flush_words(int outfile) {
-  if (sym_cnt) {
-    write_bytes(outfile, sym_buf, sym_cnt);
+void flush_words(int fd) {
+  if (syms) {
+    write_bytes(fd, symbuf, syms);
   }
 
   return;

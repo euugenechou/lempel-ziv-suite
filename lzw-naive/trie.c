@@ -1,9 +1,6 @@
 #include "trie.h"
 #include "util.h"
-#include <inttypes.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 TrieNode *trie_node_create(uint16_t code) {
   TrieNode *n = (TrieNode *) calloc(1, sizeof(TrieNode));

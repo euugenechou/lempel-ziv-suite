@@ -1,23 +1,44 @@
 #include "util.h"
-#include <inttypes.h>
-#include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 uint64_t bytes(uint64_t bits) {
   return ((bits % 8) || (!bits)) ? bits / 8 + 1 : bits / 8;
 }
 
-uint8_t bitwidth(uint16_t n) {
-  uint8_t msb_ind = 0;
+int bitwidth(Code c) {
+  int width = 1;
 
-  while (n > 1) {
-    msb_ind += 1;
-    n >>= 1;
+  while (c >>= 1) {
+    width += 1;
   }
 
-  return msb_ind + 1;
+  return width;
+}
+
+int read_bytes(int fd, uint8_t *buf, int nbytes) {
+  int bytes = 0;
+  int total = 0;
+
+  do {
+    bytes = read(fd, buf + total, nbytes - total);
+    total += bytes;
+  } while (bytes && total != nbytes);
+
+  return total;
+}
+
+int write_bytes(int fd, uint8_t *buf, int nbytes) {
+  int bytes = 0;
+  int total = 0;
+
+  do {
+    bytes = write(fd, buf + total, nbytes - total);
+    total += bytes;
+  } while (bytes && total != nbytes);
+
+  return total;
 }
 
 void check(bool cond, char *fmt, ...) {

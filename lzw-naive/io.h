@@ -1,8 +1,8 @@
 #ifndef __IO_H__
 #define __IO_H__
 
+#include "util.h"
 #include "word.h"
-#include <inttypes.h>
 #include <stdbool.h>
 
 extern uint64_t total_syms;
@@ -13,25 +13,20 @@ typedef struct FileHeader {
   uint16_t protection;
 } FileHeader;
 
-int read_bytes(int infile, uint8_t *buf, int to_read);
+void read_header(int fd, FileHeader *header);
 
-int write_bytes(int outfile, uint8_t *buf, int to_write);
+void write_header(int fd, FileHeader *header);
 
-void read_header(int infile, FileHeader *header);
+bool read_sym(int fd, Symbol *s);
 
-void write_header(int outfile, FileHeader *header);
+void buffer_code(int fd, Code c, int width);
 
-bool read_sym(int infile, uint8_t *byte);
+void flush_codes(int fd);
 
-void buffer_code(int outfile, uint16_t code, uint8_t bit_len);
+bool read_code(int fd, Code *c, int width);
 
-void flush_codes(int outfile);
+void buffer_word(int fd, Word *w);
 
-bool read_code(int infile, uint16_t *code, uint8_t bit_len);
-
-void buffer_word(int outfile, Word *w);
-
-void flush_words(int outfile);
+void flush_words(int fd);
 
 #endif
-

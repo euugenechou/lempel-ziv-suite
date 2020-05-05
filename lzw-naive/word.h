@@ -1,7 +1,7 @@
 #ifndef __WORD_H__
 #define __WORD_H__
 
-#include <inttypes.h>
+#include "util.h"
 
 typedef struct Word {
   uint8_t *syms;
@@ -12,7 +12,7 @@ typedef Word * WordTable;
 
 Word *word_create(uint8_t *syms, uint64_t len);
 
-Word *word_append_sym(Word *w, uint8_t sym);
+Word *word_append_sym(Word *w, Symbol sym);
 
 void word_delete(Word *w);
 

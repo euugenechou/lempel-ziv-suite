@@ -2,7 +2,6 @@
 #define __TRIE_H__
 
 #include "util.h"
-#include <inttypes.h>
 
 typedef struct TrieNode TrieNode;
 
