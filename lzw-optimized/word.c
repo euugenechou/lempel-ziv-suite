@@ -1,5 +1,4 @@
 #include "util.h"
-#include <stdbool.h>
 
 static Code codes[MAX];     // Each code points to the code it succeeds.
 static Symbol syms[MAX];    // Holds the symbol that was appended to each code.
