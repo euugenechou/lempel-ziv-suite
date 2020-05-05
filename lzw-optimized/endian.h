@@ -6,7 +6,7 @@
 
 static inline bool big_endian(void) {
   uint16_t word = 0x0001;
-  uint8_t *bytes = (uint8_t *) &word;
+  uint8_t *bytes = (uint8_t *)&word;
   return bytes[1];
 }
 
