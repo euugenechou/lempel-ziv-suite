@@ -41,7 +41,7 @@ void write_header(int fd, FileHeader *fh) {
 }
 
 bool read_sym(int fd, Symbol *s) {
-  static int end = UINT16_MAX;
+  static int end = -1;
 
   if (syms == 0) {
     int bytes = read_bytes(fd, symbuf, BLOCK);
