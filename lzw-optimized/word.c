@@ -5,13 +5,13 @@ static Symbol syms[MAX];
 static Symbol first[MAX];
 
 void wt_init(void) {
-  for (Code i = 0; i < ALPHABET; i += 1) {
+  for (uint32_t i = 0; i < ALPHABET; i += 1) {
     syms[i]  = i;
     first[i] = i;
     codes[i] = EMPTY;
   }
 
-  for (Code i = ALPHABET; i < MAX; i += 1) {
+  for (uint32_t i = ALPHABET; i < MAX; i += 1) {
     codes[i] = STOP;
   }
 
