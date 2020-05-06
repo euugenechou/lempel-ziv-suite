@@ -1,8 +1,8 @@
 #ifndef __ENDIAN_H__
 #define __ENDIAN_H__
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 static inline bool big_endian(void) {
   uint16_t word = 0x0001;
