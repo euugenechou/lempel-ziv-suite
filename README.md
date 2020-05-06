@@ -32,13 +32,13 @@ To build just the decoder:
 
 ### Usage
 
-To compress a file (if input or output isn't specified, ```stdin``` and
-```stdout``` are used by default, respectively):
+To compress a file (```stdin``` and ```stdout``` are the default input and
+output, respectively):
 
     $ ./encode [-i input] [-o output]
 
-To decompress a file (if input or output isn't specified, ```stdin``` and
-```stdout``` are used by default, respectively):
+To decompress a file (```stdin``` and ```stdout``` are the default input and
+output, respectively):
 
     $ ./decode [-i input] [-o output]
 
