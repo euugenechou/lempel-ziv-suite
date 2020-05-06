@@ -2,8 +2,6 @@
 #define __WORD_H__
 
 #include "util.h"
-#include <inttypes.h>
-#include <stdbool.h>
 
 void wt_init(void);
 

@@ -23,9 +23,9 @@ uint64_t bytes(uint64_t bits);
 
 int bitwidth(Code c);
 
-int read_bytes(int infile, uint8_t *buf, int to_read);
+int read_bytes(int fd, uint8_t *buf, int nbytes);
 
-int write_bytes(int infile, uint8_t *buf, int to_read);
+int write_bytes(int fd, uint8_t *buf, int nbytes);
 
 void check(bool cond, char *fmt, ...);
 

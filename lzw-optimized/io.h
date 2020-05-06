@@ -3,8 +3,6 @@
 
 #include "util.h"
 #include "word.h"
-#include <stdbool.h>
-#include <stdint.h>
 
 extern uint64_t total_syms;
 extern uint64_t total_bits;

@@ -1,6 +1,4 @@
 #include "trie.h"
-#include "util.h"
-#include <stdint.h>
 
 static Code trie[MAX][ALPHABET];
 
@@ -23,6 +21,6 @@ void trie_add(Code curr, Symbol sym, Code next) {
   return;
 }
 
-Code trie_step(Code prev, Symbol sym) {
-  return trie[prev][sym];
+Code trie_step(Code curr, Symbol sym) {
+  return trie[curr][sym];
 }

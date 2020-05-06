@@ -59,8 +59,12 @@ int main(int argc, char **argv) {
   fstat(infile, &statbuf);
   fchmod(outfile, statbuf.st_mode);
 
-  FileHeader header = { MAGIC, statbuf.st_mode };
-  write_header(outfile, &header);
+  FileHeader fh = {
+    .magic = MAGIC,
+    .protection = statbuf.st_mode
+  };
+
+  write_header(outfile, &fh);
 
   encode(infile, outfile);
 

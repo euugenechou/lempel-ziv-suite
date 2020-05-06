@@ -1,11 +1,7 @@
 #include "endian.h"
 #include "io.h"
-#include "util.h"
-#include <fcntl.h>
-#include <stdbool.h>
-#include <stdint.h>
+#include "word.h"
 #include <string.h>
-#include <unistd.h>
 
 uint64_t total_syms = 0;
 uint64_t total_bits = 0;

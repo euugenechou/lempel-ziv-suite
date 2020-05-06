@@ -5,8 +5,8 @@
 
 void trie_init(void);
 
-void trie_add(Code p, Symbol s, Code n);
+void trie_add(Code curr, Symbol s, Code next);
 
-Code trie_step(Code c, Symbol s);
+Code trie_step(Code curr, Symbol s);
 
 #endif

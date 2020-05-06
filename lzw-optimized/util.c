@@ -17,26 +17,26 @@ int bitwidth(Code c) {
   return width;
 }
 
-int read_bytes(int infile, uint8_t *buf, int to_read) {
+int read_bytes(int fd, uint8_t *buf, int nbytes) {
   int bytes = 0;
   int total = 0;
 
   do {
-    bytes = read(infile, buf + total, to_read - total);
+    bytes = read(fd, buf + total, nbytes - total);
     total += bytes;
-  } while (bytes && total != to_read);
+  } while (bytes && total != nbytes);
 
   return total;
 }
 
-int write_bytes(int outfile, uint8_t *buf, int to_write) {
+int write_bytes(int fd, uint8_t *buf, int nbytes) {
   int bytes = 0;
   int total = 0;
 
   do {
-    bytes = write(outfile, buf + total, to_write - total);
+    bytes = write(fd, buf + total, nbytes - total);
     total += bytes;
-  } while (bytes && total != to_write);
+  } while (bytes && total != nbytes);
 
   return total;
 }

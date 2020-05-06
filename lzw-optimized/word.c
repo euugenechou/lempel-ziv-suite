@@ -1,8 +1,8 @@
-#include "util.h"
+#include "word.h"
 
-static Code codes[MAX];     // Each code points to the code it succeeds.
-static Symbol syms[MAX];    // Holds the symbol that was appended to each code.
-static Symbol first[MAX];   // Holds the first symbol of each word.
+static Code codes[MAX];
+static Symbol syms[MAX];
+static Symbol first[MAX];
 
 void wt_init(void) {
   for (Code i = 0; i < ALPHABET; i += 1) {
@@ -47,5 +47,7 @@ bool wt_resolve_code(Code c, Symbol *s) {
     return chained = false;
   }
 
-  return *s = syms[stack[--ptr]];
+  *s = syms[stack[--ptr]];
+
+  return true;
 }
