@@ -14,7 +14,7 @@ void encode(int infile, int outfile) {
     if ((curr = trie_step(prev, s)) != STOP) {
       prev = curr;
     } else {
-      write_code(outfile, prev, bitwidth(next));
+      buffer_code(outfile, prev, bitwidth(next));
       trie_add(prev, s, next++);
       prev = s;
     }
@@ -27,11 +27,11 @@ void encode(int infile, int outfile) {
   }
 
   if (prev != EMPTY) {
-    write_code(outfile, prev, bitwidth(next++));
+    buffer_code(outfile, prev, bitwidth(next++));
     next = (next == MAX) ? START : next;
   }
 
-  write_code(outfile, STOP, bitwidth(next));
+  buffer_code(outfile, STOP, bitwidth(next));
   flush_codes(outfile);
   return;
 }
@@ -51,7 +51,7 @@ void decode(int infile, int outfile) {
       }
     }
 
-    write_word(outfile, curr);
+    buffer_word(outfile, curr);
     prev = curr;
 
     if (next + 1 == MAX) {

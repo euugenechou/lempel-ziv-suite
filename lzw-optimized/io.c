@@ -57,7 +57,7 @@ bool read_sym(int fd, Symbol *s) {
   return syms != end;
 }
 
-void write_code(int fd, Code c, int width) {
+void buffer_code(int fd, Code c, int width) {
   total_bits += width;
 
   if (big_endian()) {
@@ -113,7 +113,7 @@ bool read_code(int fd, Code *c, int width) {
   return *c != STOP;
 }
 
-void write_word(int fd, Code c) {
+void buffer_word(int fd, Code c) {
   Symbol s = 0;
 
   while (wt_resolve_code(c, &s)) {

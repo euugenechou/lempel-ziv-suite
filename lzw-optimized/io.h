@@ -17,13 +17,13 @@ void write_header(int fd, FileHeader *fh);
 
 bool read_sym(int fd, Symbol *sym);
 
-void write_code(int fd, Code c, int width);
+void buffer_code(int fd, Code c, int width);
 
 void flush_codes(int fd);
 
 bool read_code(int fd, Code *c, int width);
 
-void write_word(int fd, Code c);
+void buffer_word(int fd, Code c);
 
 void flush_words(int fd);
 
