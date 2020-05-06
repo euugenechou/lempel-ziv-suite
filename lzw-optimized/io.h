@@ -2,7 +2,6 @@
 #define __IO_H__
 
 #include "util.h"
-#include "word.h"
 
 extern uint64_t total_syms;
 extern uint64_t total_bits;
