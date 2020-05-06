@@ -5,37 +5,28 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
-#define ALPHABET  256         // The alphabet is the ASCII table.
-#define BYTE      8           // Byte is 8 bits.
-#define SHORT     16          // Short is 16 bits.
-#define BLOCK     4096        // Block is 4KB.
-#define MAGIC     0x8badbeef  // Unique encoder/decoder magic number.
+#define MAGIC     0x8badbeef
 
-//
-// Calculates number of bytes needed to represent a certain number of bits.
-//
-// bits:      Number of bits.
-// returns:   Number of bytes needed.
-//
+#define ALPHABET  256
+#define BLOCK     4096
+#define BYTE      8
+
+#define STOP      0
+#define EMPTY     1
+#define START     2
+#define MAX       (1 << 16)
+
+typedef uint8_t Symbol;
+typedef uint32_t Code;
+
 uint64_t bytes(uint64_t bits);
 
-//
-// Calculates the least number of bits needed to represent a uint16_t.
-//
-// n:       Number to calculate bitwidth of.
-// returns: The calculated bitwidth.
-//
-uint8_t bitwidth(uint16_t n);
+int bitwidth(Code c);
 
-//
-// Checks if a certain condition is satisfied.
-// If not satisfied, the supplied format string is printed to stderr.
-//
-// cond:    Condition that should be true.
-// fmt:     Format string to print if condition isn't met.
-// ...:     Variable arguments for format string.
-// returns: Void.
-//
+int read_bytes(int fd, uint8_t *buf, int nbytes);
+
+int write_bytes(int fd, uint8_t *buf, int nbytes);
+
 void check(bool cond, char *fmt, ...);
 
 #endif

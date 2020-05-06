@@ -1,31 +1,18 @@
-ENCODER  = encode
-DECODER  = decode
+CC      = clang
+CFLAGS 	= -Wall -Wpedantic -Wextra -Werror -Ofast
 
-ENCODERSRC = encode.c trie.c io.c util.c
-DECODERSRC = decode.c word.c io.c util.c
+.PHONY: all clean
 
-ENCODEROBJ = $(ENCODERSRC:%.c=%.o)
-DECODEROBJ = $(DECODERSRC:%.c=%.o)
+all: encode decode
 
-CC       = clang
-CFLAGS   = -Wall -Wpedantic -Wextra -Werror
-
-.PHONY: all clean infer
-
-all: $(ENCODER) $(DECODER)
-
-$(ENCODER): $(ENCODEROBJ)
+encode: encode.o lz78.o word.o trie.o io.o util.o
 	$(CC) -o $@ $^
 
-$(DECODER): $(DECODEROBJ)
+decode: decode.o lz78.o word.o trie.o io.o util.o
 	$(CC) -o $@ $^
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(ENCODER) $(DECODER) *.o infer-out
-
-infer: clean
-	infer-capture -- make
-	infer-analyze -- make
+	rm -f encode decode *.o

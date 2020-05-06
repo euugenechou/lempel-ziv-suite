@@ -1,46 +1,50 @@
 #include "util.h"
-#include <inttypes.h>
-#include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-//
-// Calculates number of bytes needed to represent a certain number of bits.
-//
-// bits:      Number of bits.
-// returns:   Number of bytes needed.
-//
+#define IS_POW_2(x)   (!(x & (x - 1)))
+
 uint64_t bytes(uint64_t bits) {
   return ((bits % 8) || (!bits)) ? bits / 8 + 1 : bits / 8;
 }
 
-//
-// Calculates the least number of bits needed to represent a uint16_t.
-//
-// n:       Number to calculate bitwidth of.
-// returns: The calculated bitwidth.
-//
-uint8_t bitwidth(uint16_t n) {
-  uint8_t msb_ind = 0;
+int bitwidth(Code c) {
+  static int width = 2;
 
-  while (n > 1) {
-    msb_ind += 1;
-    n >>= 1;
+  if (c == START) {
+    width = 2;
+  } else if (IS_POW_2(c)) {
+    width += 1;
   }
 
-  return msb_ind + 1;
+  return width;
 }
 
-//
-// Checks if a certain condition is satisfied.
-// If not satisfied, the supplied format string is printed to stderr.
-//
-// cond:    Condition that should be true.
-// fmt:     Format string to print if condition isn't met.
-// ...:     Variable arguments for format string.
-// returns: Void.
-//
+int read_bytes(int fd, uint8_t *buf, int nbytes) {
+  int bytes = 0;
+  int total = 0;
+
+  do {
+    bytes = read(fd, buf + total, nbytes - total);
+    total += bytes;
+  } while (bytes && total != nbytes);
+
+  return total;
+}
+
+int write_bytes(int fd, uint8_t *buf, int nbytes) {
+  int bytes = 0;
+  int total = 0;
+
+  do {
+    bytes = write(fd, buf + total, nbytes - total);
+    total += bytes;
+  } while (bytes && total != nbytes);
+
+  return total;
+}
+
 void check(bool cond, char *fmt, ...) {
   if (!cond) {
     va_list arg;
