@@ -1,28 +1,18 @@
-ENCODER  = encode
-DECODER  = decode
+CC      = clang
+CFLAGS 	= -Wall -Wpedantic -Wextra -Werror -Ofast
 
-MODULESRC  = trie.c word.c io.c util.c
-MODULEOBJ  = $(MODULESRC:%.c=%.o)
+.PHONY: all clean
 
-CC       = clang
-CFLAGS   = -Wall -Wpedantic -Wextra -Werror
+all: encode decode
 
-.PHONY: all clean infer
-
-all: $(ENCODER) $(DECODER)
-
-$(ENCODER): encode.o $(MODULEOBJ)
+encode: encode.o lz78.o word.o trie.o io.o util.o
 	$(CC) -o $@ $^
 
-$(DECODER): decode.o $(MODULEOBJ)
+decode: decode.o lz78.o word.o trie.o io.o util.o
 	$(CC) -o $@ $^
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(ENCODER) $(DECODER) *.o infer-out
-
-infer: clean
-	infer-capture -- make
-	infer-analyze -- make
+	rm -f encode decode *.o

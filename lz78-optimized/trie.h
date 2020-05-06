@@ -1,12 +1,12 @@
 #ifndef __TRIE_H__
 #define __TRIE_H__
 
-#include <inttypes.h>
+#include "util.h"
 
 void trie_init(void);
 
-void trie_add(uint16_t prev_code, uint8_t sym, uint16_t code);
+void trie_add(Code curr, Symbol s, Code next);
 
-uint16_t trie_step(uint16_t prev_code, uint8_t sym);
+Code trie_step(Code curr, Symbol s);
 
 #endif

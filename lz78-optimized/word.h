@@ -1,15 +1,13 @@
 #ifndef __WORD_H__
 #define __WORD_H__
 
-#include <inttypes.h>
+#include "util.h"
 
-void words_init(void);
+void wt_init(void);
 
-void words_add(uint16_t code, uint8_t sym, uint16_t next);
+void wt_add(Code code, Symbol s, Code next);
 
-uint32_t chain_codes(uint16_t code);
-
-uint8_t get_sym(void);
+bool wt_resolve_code(Code c, Symbol *s);
 
 #endif
 
