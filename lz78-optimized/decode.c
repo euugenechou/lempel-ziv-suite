@@ -19,7 +19,7 @@ void print_usage(char **argv) {
     "   %s [-hv] [-i input] [-o output]\n"
     "\n"
     "OPTIONS\n"
-    "   -h          Display program usage\n"
+    "   -h          Display program help and usage\n"
     "   -v          Display decompression statistics\n"
     "   -i input    Specify input to decompress (stdin by default)\n"
     "   -o output   Specify output to decompress to (stdout by default)\n",
@@ -65,8 +65,8 @@ int main(int argc, char **argv) {
 
   if (verbose) {
     double ratio = 1.0 - (double) bytes(total_bits) / (double) total_syms;
-    fprintf(stderr, "Compressed file size: %" PRIu64 " bytes\n", bytes(total_bits));
-    fprintf(stderr, "Uncompressed file size: %" PRIu64 " bytes\n", total_syms);
+    fprintf(stderr, "Compressed size: %" PRIu64 " bytes\n", bytes(total_bits));
+    fprintf(stderr, "Uncompressed size: %" PRIu64 " bytes\n", total_syms);
     fprintf(stderr, "Compression ratio: %.2lf%%\n", 100.0 * ratio);
   }
 

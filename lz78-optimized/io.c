@@ -127,7 +127,7 @@ bool read_pair(int fd, Code *c, Symbol *s, int width) {
     }
 
     if (bitbuf[bits / BYTE] & (1 << (bits % BYTE))) {
-      *s |= (1 << (i % BYTE));
+      *s |= (1 << i);
     }
 
     bits = (bits + 1) % (BLOCK * BYTE);
