@@ -4,15 +4,15 @@
 #include "util.h"
 
 typedef struct Word {
-  uint8_t *syms;
-  uint64_t len;
+  Symbol *syms;
+  uint32_t len;
 } Word;
 
 typedef Word * WordTable;
 
-Word *word_create(uint8_t *syms, uint64_t len);
+Word *word_create(Symbol *syms, uint32_t len);
 
-Word *word_append_sym(Word *w, Symbol sym);
+Word *word_append_sym(Word *w, Symbol s);
 
 void word_delete(Word *w);
 

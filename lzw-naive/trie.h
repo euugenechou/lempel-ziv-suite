@@ -7,10 +7,10 @@ typedef struct TrieNode TrieNode;
 
 struct TrieNode {
   TrieNode *children[ALPHABET];
-  uint16_t code;
+  Code code;
 };
 
-TrieNode *trie_node_create(uint16_t code);
+TrieNode *trie_node_create(Code c);
 
 void trie_node_delete(TrieNode *n);
 
@@ -20,6 +20,6 @@ void trie_reset(TrieNode *root);
 
 void trie_delete(TrieNode *n);
 
-TrieNode *trie_step(TrieNode *n, uint8_t sym);
+TrieNode *trie_step(TrieNode *n, Symbol s);
 
 #endif

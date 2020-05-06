@@ -1,11 +1,11 @@
 #include "trie.h"
 #include <stdlib.h>
 
-TrieNode *trie_node_create(uint16_t code) {
+TrieNode *trie_node_create(Code c) {
   TrieNode *n = (TrieNode *) calloc(1, sizeof(TrieNode));
   check(n, "Failed to calloc() TrieNode.");
 
-  n->code = code;
+  n->code = c;
   return n;
 }
 
@@ -50,6 +50,6 @@ void trie_delete(TrieNode *n) {
   return;
 }
 
-TrieNode *trie_step(TrieNode *n, uint8_t sym) {
-  return n->children[sym];
+TrieNode *trie_step(TrieNode *n, Symbol s) {
+  return n->children[s];
 }

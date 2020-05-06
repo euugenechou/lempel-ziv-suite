@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-Word *word_create(uint8_t *syms, uint64_t len) {
+Word *word_create(Symbol *syms, uint32_t len) {
   Word *w = (Word *)malloc(sizeof(Word));
   check(w, "Failed to malloc() word.\n");
 
   w->len = len;
-  w->syms = (uint8_t *)malloc(len * sizeof(uint8_t));
+  w->syms = (Symbol *)malloc(len * sizeof(Symbol));
   check(w->syms, "Failed to malloc() word byte array.\n");
 
   memcpy(w->syms, syms, len);
@@ -19,7 +19,7 @@ Word *word_append_sym(Word *w, Symbol s) {
   check(appended, "Failed to malloc() word.\n");
 
   appended->len = w->len + 1;
-  appended->syms = (uint8_t *)malloc(appended->len * sizeof(uint8_t));
+  appended->syms = (Symbol *)malloc(appended->len * sizeof(Symbol));
   check(appended->syms, "Failed to malloc() word byte array.\n");
 
   memcpy(appended->syms, w->syms, w->len);
@@ -39,7 +39,7 @@ WordTable *wt_create(void) {
   check(wt, "Failed to calloc() word table");
 
   for (uint16_t i = 0; i < ALPHABET; i += 1) {
-    wt[i] = word_create((uint8_t *)&i, 1);
+    wt[i] = word_create((Symbol *)&i, 1);
   }
 
   return wt;
