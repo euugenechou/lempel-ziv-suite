@@ -1,5 +1,4 @@
 #include "io.h"
-#include "lzw.h"
 #include "trie.h"
 #include "word.h"
 

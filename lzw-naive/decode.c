@@ -19,7 +19,7 @@ void print_usage(char **argv) {
     "   %s -[hv] [-i input] [-o output]\n"
     "\n"
     "OPTIONS\n"
-    "   -h          Display program usage\n"
+    "   -h          Display program help and usage\n"
     "   -v          Display decompression statistics\n"
     "   -i input    Specify input to decompress (stdin by default)\n"
     "   -o output   Specify output to decompress to (stdout by default)\n",

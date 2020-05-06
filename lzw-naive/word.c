@@ -1,4 +1,3 @@
-#include "util.h"
 #include "word.h"
 #include <stdlib.h>
 #include <string.h>

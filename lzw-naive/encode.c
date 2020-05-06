@@ -19,7 +19,7 @@ void print_usage(char **argv) {
     "   %s -[hv] [-i input] [-o output]\n"
     "\n"
     "OPTIONS\n"
-    "   -h          Display program usage\n"
+    "   -h          Display program help and usage\n"
     "   -v          Display compression statistics\n"
     "   -i input    Specify input to compress (stdin by default)\n"
     "   -o output   Specify output to compress to (stdout by default)\n",

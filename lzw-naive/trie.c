@@ -1,5 +1,4 @@
 #include "trie.h"
-#include "util.h"
 #include <stdlib.h>
 
 TrieNode *trie_node_create(uint16_t code) {
