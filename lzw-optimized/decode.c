@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
       check(infile != -1, "Failed to open %s.\n", optarg);
       break;
     case 'o':
-      outfile = open(optarg, O_WRONLY | O_CREAT | O_TRUNC);
+      outfile = open(optarg, O_WRONLY | O_CREAT | O_TRUNC, 0644);
       check(outfile != -1, "Failed to open %s.\n", optarg);
       break;
     case 'h':
