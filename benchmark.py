@@ -11,11 +11,35 @@ import subprocess as sp
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--artificial", action="store_true")
-parser.add_argument("--calgary", action="store_true")
-parser.add_argument("--canterbury", action="store_true")
-parser.add_argument("--large", action="store_true")
-parser.add_argument("--all", action="store_true")
+parser.add_argument(
+    "--artificial",
+    help="Use Artificial Corpus texts",
+    action="store_true"
+)
+
+parser.add_argument(
+    "--calgary",
+    help="Use Calgary Corpus texts",
+    action="store_true"
+)
+
+parser.add_argument(
+    "--canterbury",
+    help="Use Canterbury Corpus texts",
+    action="store_true"
+)
+
+parser.add_argument(
+    "--large",
+    help="Use Large Corpus texts",
+    action="store_true"
+)
+
+parser.add_argument(
+    "--all",
+    help="Use all supplied corpora",
+    action="store_true"
+)
 
 args = parser.parse_args()
 
