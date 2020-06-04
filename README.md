@@ -66,7 +66,7 @@ The texts tested with each implemenation are part of a corpora, or more
 specifically, the Artificial Corpus, Calgary Corpus, Canterbury Corpus, and
 Large Corpus, as supplied from http://corpus.canterbury.ac.nz/index.html. The
 corpora is widely used for testing lossless compression algorithms. The script
-also allows for an ```--all``` to test with the supplied corpora.
+also allows for an ```--all``` flag to test with the supplied corpora.
 
 ## License
 
