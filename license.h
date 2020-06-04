@@ -22,6 +22,6 @@
 // serpent in his hand and rend him. Let him be struck with palsy, and
 // all his members wither. Let him languish in pain, crying aloud for
 // mercy and let there be no surcease to his agony till he sink to
-// Dissolution. Let worms gnaw his entrails in token of the worm
+// dissolution. Let worms gnaw his entrails in token of the worm
 // that dieth not, and when at last he goeth to his final punishment
-// let the flames of hell consume him.
+// let the flames of Hell consume him.
