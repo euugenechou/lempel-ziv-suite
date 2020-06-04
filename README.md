@@ -49,8 +49,26 @@ Both the encoder and decoder support the command-line options below.
 
     '-h': Display program usage and help
     '-v': Display statistics on compression/decompression
-    
+
+### Benchmarks
+
+A ```python3``` script, ```benchmark.py``` has been supplied for easy comparison
+between each of the Lempel-Ziv implementations. Both the UNIX ```compress``` and
+```gzip``` utilities are included for comparison as well. To use the script:
+
+    $ python3 benchmark.py
+
+Or if supplied shebang/hashbang points to the correct interpreter:
+
+    $ ./benchmark.py
+
+The texts tested with each implemenation are part of a corpora, or more
+specifically, the Artificial Corpus, Calgary Corpus, Canterbury Corpus, and
+Large Corpus, as supplied from http://corpus.canterbury.ac.nz/index.html. The
+corpora is widely used for testing lossless compression algorithms.
+
 ## License
+
 Copyright 2020 Eugene Chou
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
