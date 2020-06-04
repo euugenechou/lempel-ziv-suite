@@ -58,7 +58,7 @@ between each of the Lempel-Ziv implementations. Both the UNIX ```compress``` and
 
     $ python3 benchmark.py
 
-Or if supplied shebang/hashbang points to the correct interpreter:
+Or if the supplied shebang/hashbang points to the correct interpreter:
 
     $ ./benchmark.py
 
