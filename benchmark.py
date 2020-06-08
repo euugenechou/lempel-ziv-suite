@@ -3,6 +3,7 @@
 import os
 import argparse
 import filecmp
+import time
 import subprocess as sp
 
 ##
@@ -115,22 +116,33 @@ for corpus in corpora:
         orig_size = os.stat(uncomp).st_size
 
         if orig_size > 1:
-            print(f"\n    *** {text}: {orig_size} bytes ***")
+            print(f"\n   === {text}: {orig_size} bytes ===")
         else:
-            print(f"\n    *** {text}: {orig_size} byte ***")
+            print(f"\n   === {text}: {orig_size} byte ===")
 
         for c, e, d in zip(coders, encoders, decoders):
+            start = time.time()
             sp.run(f"{e} < {uncomp} > {comped}", capture_output=True,
                     shell=True)
+            end = time.time()
+            time_en = end - start
+
+            start = time.time()
             sp.run(f"{d} < {comped} > {decomp}", capture_output=True,
                     shell=True)
+            end = time.time()
+            time_de = end - start
 
             assert(filecmp.cmp(uncomp, decomp))
 
             comp_size = os.stat(comped).st_size
             ratio = 100 * (1 - (comp_size / orig_size))
 
-            print(f"      -- {c}: {comp_size} bytes, ratio: {ratio:.2f}%")
+            print(f"      {c}:")
+            print(f"         Compressed size: {comp_size} bytes")
+            print(f"         Compression ratio: {ratio:.2f}%")
+            print(f"         Compressed in: {time_en} secs")
+            print(f"         Decompressed in: {time_de} secs")
 
 
 ##
