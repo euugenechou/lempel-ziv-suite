@@ -12,7 +12,8 @@
 #define BYTE          8
 
 #define STOP          256
-#define START         257
+#define EMPTY         257
+#define START         258
 #define MAX           (1 << 16)
 
 typedef uint8_t   Symbol;
