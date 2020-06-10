@@ -108,7 +108,7 @@ for corpus in corpora:
 
     corpus = f"corpora/{corpus}"
 
-    for text in os.listdir(corpus):
+    for text in sorted(os.listdir(corpus)):
         uncomp = f"{corpus}/{text}"
         comped = f"/tmp/{text}.zipped"
         decomp = f"/tmp/{text}"
