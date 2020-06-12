@@ -13,10 +13,10 @@ parser.add_argument("-i", help="input", nargs="?")
 args = parser.parse_args()
 
 coder = "lz78-naive"
-e = coder + "/encode"
-d = coder + "/decode"
+e = f"../{coder}/encode"
+d = f"../{coder}/decode"
 
-sp.run(f"make -C {coder}", capture_output=True, shell=True)
+sp.run(f"make -C ../{coder}", capture_output=True, shell=True)
 
 end = 0
 start = 0
@@ -47,6 +47,6 @@ if (args.d):
 duration = end - start
 throughput = (filesize / duration) / 1000000
 
-sp.run(f"make clean -C {coder}", capture_output=True, shell=True)
+sp.run(f"make clean -C ../{coder}", capture_output=True, shell=True)
 
 print(f"{duration} {throughput}")
