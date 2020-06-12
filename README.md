@@ -52,21 +52,9 @@ Both the encoder and decoder support the command-line options below.
 
 ### Benchmarks
 
-A ```python3``` script, ```benchmark.py``` has been supplied for easy comparison
-between each of the Lempel-Ziv implementations. Both the UNIX ```compress``` and
-```gzip``` utilities are included for comparison as well. To use the script:
-
-    $ python3 benchmark.py [--artificial] [--calgary] [--canterbury] [--large]
-
-Or if the supplied shebang/hashbang points to the correct interpreter:
-
-    $ ./benchmark.py [--artificial] [--calgary] [--canterbury] [--large]
-
-The texts tested with each implemenation are part of a corpora, or more
-specifically, the Artificial Corpus, Calgary Corpus, Canterbury Corpus, and
-Large Corpus, as supplied from http://corpus.canterbury.ac.nz/index.html. The
-corpora is widely used for testing lossless compression algorithms. The script
-also allows for an ```--all``` flag to test with the supplied corpora.
+To run benchmarks on all implementations, install Pilot, head into the
+```benchmarks``` directory, and run ```run.sh```. Pilot can be found here:
+https://ascar.io/pilot.
 
 ## License
 
