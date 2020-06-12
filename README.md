@@ -53,8 +53,11 @@ Both the encoder and decoder support the command-line options below.
 ### Benchmarks
 
 To run benchmarks on all implementations, install Pilot, head into the
-```benchmarks``` directory, and run ```run.sh```. Pilot can be found here:
-https://ascar.io/pilot.
+```benchmarks``` directory, and run:
+
+    $ ./benchmark.sh
+
+The Pilot framework can be found here: https://ascar.io/pilot.
 
 ## License
 
