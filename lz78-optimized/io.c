@@ -78,7 +78,7 @@ void buffer_pair(int fd, Code c, Symbol s, int width) {
     }
   }
 
-  for (int i = 0; i < BYTE; i += 1) {
+  for (uint_fast8_t i = 0; i < BYTE; i += 1) {
     if (s & (1 << i)) {
       bitbuf[bits / BYTE] |= (1 << (bits % BYTE));
     }
@@ -121,7 +121,7 @@ bool read_pair(int fd, Code *c, Symbol *s, int width) {
     bits = (bits + 1) % (BLOCK * BYTE);
   }
 
-  for (int i = 0; i < BYTE; i += 1) {
+  for (uint_fast8_t i = 0; i < BYTE; i += 1) {
     if (!bits) {
       read_bytes(fd, bitbuf, BLOCK);
     }
