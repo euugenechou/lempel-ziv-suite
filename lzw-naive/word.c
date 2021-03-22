@@ -38,7 +38,7 @@ WordTable *wt_create(void) {
   WordTable *wt = (WordTable *) calloc(MAX, sizeof(Word *));
   check(wt, "Failed to calloc() word table");
 
-  for (uint16_t i = 0; i < ALPHABET; i += 1) {
+  for (uint_fast16_t i = 0; i < ALPHABET; i += 1) {
     wt[i] = word_create((Symbol *)&i, 1);
   }
 
@@ -46,7 +46,7 @@ WordTable *wt_create(void) {
 }
 
 void wt_reset(WordTable *wt) {
-  for (uint32_t i = ALPHABET; i < MAX; i += 1) {
+  for (uint_fast32_t i = ALPHABET; i < MAX; i += 1) {
     if (wt[i]) {
       word_delete(wt[i]);
       wt[i] = NULL;
@@ -57,7 +57,7 @@ void wt_reset(WordTable *wt) {
 }
 
 void wt_delete(WordTable *wt) {
-  for (uint32_t i = 0; i < MAX; i += 1) {
+  for (uint_fast32_t i = 0; i < MAX; i += 1) {
     if (wt[i]) {
       word_delete(wt[i]);
       wt[i] = NULL;

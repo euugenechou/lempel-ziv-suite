@@ -19,7 +19,7 @@ TrieNode *trie_create(void) {
 }
 
 void trie_reset(TrieNode *root) {
-  for (uint16_t i = 0; i < ALPHABET; i += 1) {
+  for (uint_fast16_t i = 0; i < ALPHABET; i += 1) {
     if (root->children[i]) {
       trie_delete(root->children[i]);
       root->children[i] = NULL;
@@ -31,7 +31,7 @@ void trie_reset(TrieNode *root) {
 
 void trie_delete(TrieNode *n) {
   if (n) {
-    for (uint16_t i = 0; i < ALPHABET; i += 1) {
+    for (uint_fast16_t i = 0; i < ALPHABET; i += 1) {
       trie_delete(n->children[i]);
     }
 
