@@ -11,7 +11,7 @@ void wt_init(void) {
     codes[i] = EMPTY;
   }
 
-  for (uint_fast16_t i = ALPHABET; i < MAX; i += 1) {
+  for (uint_fast32_t i = ALPHABET; i < MAX; i += 1) {
     codes[i] = STOP;
   }
 
