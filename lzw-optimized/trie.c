@@ -3,8 +3,8 @@
 static Code trie[MAX][ALPHABET];
 
 void trie_init(void) {
-  for (uint32_t i = 0; i < MAX; i += 1) {
-    for (uint16_t j = 0; j < ALPHABET; j += 1) {
+  for (uint_fast32_t i = 0; i < MAX; i += 1) {
+    for (uint_fast16_t j = 0; j < ALPHABET; j += 1) {
       if (i == EMPTY) {
         trie[i][j] = j;
       } else {

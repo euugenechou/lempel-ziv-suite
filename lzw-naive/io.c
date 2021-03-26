@@ -116,7 +116,7 @@ bool read_code(int fd, Code *c, int width) {
 void buffer_word(int fd, Word *w) {
   total_syms += w->len;
 
-  for (uint32_t i = 0; i < w->len; i += 1) {
+  for (uint_fast32_t i = 0; i < w->len; i += 1) {
     symbuf[syms++] = w->syms[i];
 
     if (syms == BLOCK) {

@@ -17,7 +17,7 @@ void trie_node_delete(TrieNode *n) {
 TrieNode *trie_create(void) {
   TrieNode *root = trie_node_create(0);
 
-  for (uint16_t i = 0; i < ALPHABET; i += 1) {
+  for (uint_fast16_t i = 0; i < ALPHABET; i += 1) {
     root->children[i] = trie_node_create(i);
   }
 
@@ -25,8 +25,8 @@ TrieNode *trie_create(void) {
 }
 
 void trie_reset(TrieNode *root) {
-  for (uint16_t i = 0; i < ALPHABET; i += 1) {
-    for (uint16_t j = 0; j < ALPHABET; j += 1) {
+  for (uint_fast16_t i = 0; i < ALPHABET; i += 1) {
+    for (uint_fast16_t j = 0; j < ALPHABET; j += 1) {
       if (root->children[i]->children[j]) {
         trie_delete(root->children[i]->children[j]);
         root->children[i]->children[j] = NULL;
@@ -39,7 +39,7 @@ void trie_reset(TrieNode *root) {
 
 void trie_delete(TrieNode *n) {
   if (n) {
-    for (uint16_t i = 0; i < ALPHABET; i += 1) {
+    for (uint_fast16_t i = 0; i < ALPHABET; i += 1) {
       trie_delete(n->children[i]);
     }
 

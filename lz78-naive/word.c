@@ -51,7 +51,7 @@ WordTable *wt_create(void) {
 }
 
 void wt_reset(WordTable *wt) {
-  for (uint32_t i = START; i < MAX; i += 1) {
+  for (uint_fast32_t i = START; i < MAX; i += 1) {
     if (wt[i]) {
       word_delete(wt[i]);
       wt[i] = NULL;
@@ -62,7 +62,7 @@ void wt_reset(WordTable *wt) {
 }
 
 void wt_delete(WordTable *wt) {
-  for (uint32_t i = EMPTY; i < MAX; i += 1) {
+  for (uint_fast32_t i = EMPTY; i < MAX; i += 1) {
     if (wt[i]) {
       word_delete(wt[i]);
       wt[i] = NULL;
